@@ -3,11 +3,15 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useSignup } from '../../hooks/useSignup';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
+  const { isPending, error, signup } = useSignup();
 
   function onInputChange(e) {
     switch (e.target.id) {
@@ -25,7 +29,7 @@ export default function Signup() {
 
   function signupSubmit(e) {
     e.preventDefault();
-    console.log(email, displayName, password);
+    signup(email, password, displayName);
   }
 
   return (
@@ -39,39 +43,49 @@ export default function Signup() {
       }}
     >
       <Typography variant='h1'>Sign Up</Typography>
-      <TextField
-        id='email'
-        label='Email'
-        variant='outlined'
-        onChange={(e) => onInputChange(e)}
-        value={email}
-        inputProps={{
-          type: 'email',
-        }}
-        required
-      />
-      <TextField
-        id='displayName'
-        label='Display Name'
-        variant='outlined'
-        onChange={(e) => onInputChange(e)}
-        value={displayName}
-        required
-      />
-      <TextField
-        id='password'
-        label='Password'
-        variant='outlined'
-        inputProps={{
-          type: 'password',
-        }}
-        value={password}
-        onChange={(e) => onInputChange(e)}
-        required
-      />
-      <Button type='submit' variant='contained'>
-        Sign Up
-      </Button>
+      {!isPending && (
+        <>
+          <TextField
+            id='email'
+            label='Email'
+            variant='outlined'
+            onChange={(e) => onInputChange(e)}
+            value={email}
+            inputProps={{
+              type: 'email',
+            }}
+            required
+          />
+          <TextField
+            id='displayName'
+            label='Display Name'
+            variant='outlined'
+            onChange={(e) => onInputChange(e)}
+            value={displayName}
+            required
+          />
+          <TextField
+            id='password'
+            label='Password'
+            variant='outlined'
+            inputProps={{
+              type: 'password',
+            }}
+            value={password}
+            onChange={(e) => onInputChange(e)}
+            required
+          />
+          <Button type='submit' variant='contained'>
+            Sign Up
+          </Button>
+        </>
+      )}
+      {isPending && <CircularProgress />}
+      {error && (
+        <Alert sx={{ mt: 2.5 }} severity='error'>
+          {error}
+        </Alert>
+      )}
     </Box>
   );
 }

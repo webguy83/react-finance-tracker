@@ -3,10 +3,14 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import { useLogin } from '../../hooks/useLogin';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login, isPending, error } = useLogin();
 
   function onInputChange(e) {
     switch (e.target.id) {
@@ -21,7 +25,7 @@ export default function Login() {
 
   function loginSubmit(e) {
     e.preventDefault();
-    console.log(email, password);
+    login(email, password);
   }
 
   return (
@@ -35,28 +39,38 @@ export default function Login() {
       }}
     >
       <Typography variant='h1'>Login</Typography>
-      <TextField
-        id='email'
-        label='Email'
-        variant='outlined'
-        onChange={(e) => onInputChange(e)}
-        value={email}
-        required
-      />
-      <TextField
-        id='password'
-        label='Password'
-        variant='outlined'
-        inputProps={{
-          type: 'password',
-        }}
-        value={password}
-        onChange={(e) => onInputChange(e)}
-        required
-      />
-      <Button type='submit' variant='contained'>
-        Login
-      </Button>
+      {!isPending && (
+        <>
+          <TextField
+            id='email'
+            label='Email'
+            variant='outlined'
+            onChange={(e) => onInputChange(e)}
+            value={email}
+            required
+          />
+          <TextField
+            id='password'
+            label='Password'
+            variant='outlined'
+            inputProps={{
+              type: 'password',
+            }}
+            value={password}
+            onChange={(e) => onInputChange(e)}
+            required
+          />
+          <Button type='submit' variant='contained'>
+            Login
+          </Button>
+        </>
+      )}
+      {isPending && <CircularProgress />}
+      {error && (
+        <Alert sx={{ mt: 2.5 }} severity='error'>
+          {error}
+        </Alert>
+      )}
     </Box>
   );
 }
