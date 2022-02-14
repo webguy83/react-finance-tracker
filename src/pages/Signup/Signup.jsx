@@ -75,7 +75,7 @@ export default function Signup() {
             onChange={(e) => onInputChange(e)}
             required
           />
-          <Button type='submit' variant='contained'>
+          <Button color='secondary' type='submit' variant='contained'>
             Sign Up
           </Button>
         </>

@@ -1,11 +1,12 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore/lite';
 import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
   signOut,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -26,6 +27,7 @@ const authConfig = {
   updateProfile,
   signOut,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
 };
 
-export { db, collection, getDocs, authConfig };
+export { db, collection, getDocs, authConfig, addDoc };

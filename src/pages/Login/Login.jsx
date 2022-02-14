@@ -60,7 +60,7 @@ export default function Login() {
             onChange={(e) => onInputChange(e)}
             required
           />
-          <Button type='submit' variant='contained'>
+          <Button color='secondary' type='submit' variant='contained'>
             Login
           </Button>
         </>
