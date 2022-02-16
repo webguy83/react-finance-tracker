@@ -1,25 +1,10 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import PaidIcon from '@mui/icons-material/Paid';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import DesktopDatePicker from '@mui/lab/DatePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { createTheme, InputBase, InputLabel, Paper, ThemeProvider } from '@mui/material';
-
-const newTheme = createTheme({
-  components: {
-    MuiSvgIcon: {
-      styleOverrides: {
-        root: {
-          color: 'white',
-        },
-      },
-    },
-  },
-});
+import { InputBase, InputLabel, Paper } from '@mui/material';
 
 const MyInput = styled(InputBase)(({ theme }) => ({
   color: theme.palette.primary.main,
@@ -38,16 +23,25 @@ const BackGroundPaper = styled(Paper)(({ theme }) => ({
   color: 'palette.main',
 }));
 
-export default function Transaction() {
+export default function Transaction({ uid, addDocument, response }) {
   const [transName, setTransName] = useState('');
   const [amount, setAmount] = useState('');
-  const [date, setDate] = useState(new Date());
 
   const addTransaction = (e) => {
     e.preventDefault();
-    console.log(date);
-    console.log(amount, transName, date);
+    addDocument({
+      uid,
+      amount,
+      transaction: transName,
+    });
   };
+
+  useEffect(() => {
+    if (response.document) {
+      setTransName('');
+      setAmount('');
+    }
+  }, [response.document]);
 
   return (
     <BackGroundPaper elevation={8} onSubmit={(e) => addTransaction(e)}>
@@ -85,30 +79,6 @@ export default function Transaction() {
             value={amount}
           />
         </Box>
-        <ThemeProvider theme={newTheme}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DesktopDatePicker
-              label='Basic example'
-              value={date}
-              onChange={(newValue) => {
-                setDate(newValue);
-              }}
-              renderInput={({ inputRef, inputProps, InputProps }) => (
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    mt: 2.5,
-                  }}
-                >
-                  <input style={{ width: '100%' }} ref={inputRef} {...inputProps} />
-                  {InputProps?.endAdornment}
-                </Box>
-              )}
-            />
-          </LocalizationProvider>
-        </ThemeProvider>
         <Button
           variant='contained'
           size='medium'

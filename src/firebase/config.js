@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -30,4 +30,4 @@ const authConfig = {
   onAuthStateChanged,
 };
 
-export { db, collection, getDocs, authConfig, addDoc };
+export { db, collection, getDocs, authConfig, addDoc, serverTimestamp };

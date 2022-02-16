@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useReducer, useState } from 'react';
-import { collection, db, addDoc } from '../firebase/config';
+import { collection, db, addDoc, serverTimestamp } from '../firebase/config';
 
 const initState = {
   document: null,
@@ -35,7 +35,7 @@ export const useFirestore = (col) => {
     dispatch({ type: 'IS_PENDING' });
 
     try {
-      const addedDoc = await addDoc(collection(db, col), doc);
+      const addedDoc = await addDoc(collection(db, col), { ...doc, createdAt: serverTimestamp() });
       dispatchIfNoCancelled({ type: 'ADDED_DOCUMENT', payload: addedDoc });
     } catch (err) {
       dispatchIfNoCancelled({ type: 'ERROR', payload: err.message });

@@ -6,11 +6,13 @@ import NavBar from './components/Navbar/NavBar';
 import Container from '@mui/material/Container';
 import { useAuthContext } from './hooks/useAuthContext';
 import CircularProgress from '@mui/material/CircularProgress';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function App() {
   const { authIsReady, user } = useAuthContext();
   return (
     <>
+      <CssBaseline />
       {authIsReady && (
         <BrowserRouter>
           <NavBar />
