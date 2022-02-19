@@ -17,7 +17,7 @@ export default function App() {
         <BrowserRouter>
           <NavBar />
           <Container
-            maxWidth='md'
+            maxWidth='lg'
             sx={{
               mt: 2.5,
             }}

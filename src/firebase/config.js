@@ -1,5 +1,16 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, addDoc, serverTimestamp } from 'firebase/firestore';
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  addDoc,
+  serverTimestamp,
+  query,
+  where,
+  onSnapshot,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -30,4 +41,16 @@ const authConfig = {
   onAuthStateChanged,
 };
 
-export { db, collection, getDocs, authConfig, addDoc, serverTimestamp };
+export {
+  db,
+  collection,
+  getDocs,
+  authConfig,
+  addDoc,
+  serverTimestamp,
+  query,
+  where,
+  onSnapshot,
+  deleteDoc,
+  doc,
+};

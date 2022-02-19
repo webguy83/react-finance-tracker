@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useEffect, useReducer, useState } from 'react';
-import { collection, db, addDoc, serverTimestamp } from '../firebase/config';
+import { collection, db, addDoc, serverTimestamp, deleteDoc, doc } from '../firebase/config';
 
 const initState = {
   document: null,
@@ -14,6 +14,8 @@ const reducer = (state, action) => {
       return { isPending: true, document: null, error: null };
     case 'ADDED_DOCUMENT':
       return { isPending: false, document: action.payload, error: null };
+    case 'DELETE_DOCUMENT':
+      return { isPending: false, document: null, error: null };
     case 'ERROR':
       return { isPending: false, document: null, error: action.payload };
     default:
@@ -41,7 +43,16 @@ export const useFirestore = (col) => {
       dispatchIfNoCancelled({ type: 'ERROR', payload: err.message });
     }
   };
-  const deleteDocument = (id) => {};
+  const deleteDocument = async (id) => {
+    dispatch({ type: 'IS_PENDING' });
+
+    try {
+      await deleteDoc(doc(db, col, id));
+      dispatchIfNoCancelled({ type: 'DELETE_DOCUMENT' });
+    } catch (err) {
+      dispatchIfNoCancelled({ type: 'ERROR', payload: err.message });
+    }
+  };
 
   useEffect(() => {
     return () => setIsCancelled(true);
